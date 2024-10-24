@@ -32,4 +32,12 @@ Se usa el commando para comprobar que esta ejecutandose
 
  --sudo apt install apache2 ghostscript libapache2-mod-php mysql-server php php-bcmath php-curl php-imagick php-intl      php-json php-mbstring php-mysql php-xml php-zip
 
+2.Instalar wordpress
 
+ --sudo mkdir -p /srv/www
+ 
+ --sudo chown www-data: /srv/www
+
+ --mv latest.tar.gz /srv/www
+
+ --tar zxvf latest.tar.gz
