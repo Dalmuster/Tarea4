@@ -38,6 +38,48 @@ Se usa el commando para comprobar que esta ejecutandose
  
  --sudo chown www-data: /srv/www
 
+ --curl --output latest.tar.gz https://wordpress.org/latest.tar.gz
+
  --mv latest.tar.gz /srv/www
 
  --tar zxvf latest.tar.gz
+
+3.Configurar apache para wordpress
+
+ Crea el archivo wordpres.conf en el directorio /etc/apache2/sites-available/wordpress.conf
+
+<VirtualHost *:80>
+    DocumentRoot /srv/www/wordpress
+    <Directory /srv/www/wordpress>
+        Options FollowSymLinks
+        AllowOverride Limit Options FileInfo
+        DirectoryIndex index.php
+        Require all granted
+    </Directory>
+    <Directory /srv/www/wordpress/wp-content>
+        Options FollowSymLinks
+        Require all granted
+    </Directory>
+</VirtualHost>
+
+Recarga el servicio de apache2 una vez escrito el archivo
+
+ --service apache2 reload
+
+Activo el sitio
+
+ --a2ensite wordpress
+
+Habilita en modulo rewrite
+
+ --sudo a2enmod rewrite
+
+Desabilita la página por defecto
+
+ --sudo a2dissite 000-default
+
+ Por ultimo recarga la pagina
+
+ --sudo service apache2 reload
+
+ 
