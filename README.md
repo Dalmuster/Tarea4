@@ -82,4 +82,33 @@ Desabilita la página por defecto
 
  --sudo service apache2 reload
 
+ 4.Crear base de datos
+
+ Entro en el programa con el usuario root
+
+  --mysql -u root
+
+ Creo la base de datos wordpress , usuario, damos privilegios y los recargamos
+
+  --CREATE DATABASE wordpress;
+
+  --CREATE USER wordpress@localhost IDENTIFIED BY 'daniel';
+
+  --GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER
+    -> ON wordpress.*
+    -> TO wordpress@localhost;
  
+ --FLUSH PRIVILEGES;
+
+5.Configurar wordpress para que se conecte a la base de datos
+
+Copio el archivo de configuracion
+
+  --cp /srv/www/wordpress/wp-config-sample.php /srv/www/wordpress/wp-config.php
+
+Configuro el archivo de wordpress
+
+sudo -u www-data sed -i 's/database_name_here/wordpress/' /srv/www/wordpress/wp-config.php
+sudo -u www-data sed -i 's/username_here/wordpress/' /srv/www/wordpress/wp-config.php
+sudo -u www-data sed -i 's/password_here/<daniel>/' /srv/www/wordpress/wp-config.php
+  
