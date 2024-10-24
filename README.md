@@ -19,6 +19,11 @@
  
  --mysql_secure_installation
 
+Se usa el commando para comprobar que esta ejecutandose
+
+![imagen](https://github.com/user-attachments/assets/98c0713d-360e-4484-834e-8670a4a0b9ce)
+
+
  #Ejercicio 2
 
  1.Instalar dependencias
