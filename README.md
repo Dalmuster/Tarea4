@@ -42,4 +42,14 @@ http://10.0.9.110:8000/info.php
 
 ![imagen](https://github.com/user-attachments/assets/6355a797-5c58-4857-8081-c8530a63dc2f)
 
+#Ejercicio 2
+
+1-Utilizar el comando para instalar los paquetes necesarios
+
+--sudo apt install ghostscript libapache2-mod-php mysql-server php php-bcmath php-curl php-imagick php-intl php-json php-mbstring php-mysql php-xml php-zip
+
+2-Crear la instalacion
+
+--curl https://wordpress.org/latest.tar.gz | tar zx -C /srv/www
+
 
