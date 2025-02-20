@@ -48,8 +48,77 @@ http://10.0.9.110:8000/info.php
 
 --sudo apt install ghostscript libapache2-mod-php mysql-server php php-bcmath php-curl php-imagick php-intl php-json php-mbstring php-mysql php-xml php-zip
 
-2-Crear la instalacion
+2-Creamos la instalación de wordpress
 
---curl https://wordpress.org/latest.tar.gz | tar zx -C /srv/www
+-Primero creamos la carpeta
+mkdir -p /srv/www
 
+-Le damos los permisos
+chown www-data: /srv/www
+
+-Descargamos el archivo
+curl -o latest.tar.gz https://wordpress.org/latest.tar.gz
+
+-Lo descomprimimos
+
+tar zx -C /srv/www -f latest.tar.gz
+
+3-Configuramos apache
+
+touch /etc/apache2/sites-available/wordpress.conf
+
+Debería quedar algo así
+
+![image](https://github.com/user-attachments/assets/920faa98-e62d-4a81-ae0a-68d534863a48)
+
+-Habilitamos el sitio
+
+service apache2 reload
+
+-Habilitamos la reescritura
+
+a2enmod rewrite
+
+-Desabilitamos el sitio predeterminado
+
+a2dissite 000-default
+
+-Reiniciamos apache
+
+service apache2 restart
+
+-Usando el commando vamos creando lo necesario
+
+mysql -u root -p
+
+![image](https://github.com/user-attachments/assets/861a91c2-928a-4ea0-8c20-18cb27ebbc29)
+
+![image](https://github.com/user-attachments/assets/8532d0f9-c9a7-495d-a951-e730abbd5757)
+
+![image](https://github.com/user-attachments/assets/8484b2dc-055a-4957-9e9b-1a7db814e023)
+
+![image](https://github.com/user-attachments/assets/ad0f218c-01df-4ef8-9e60-0d7e420b7e27)
+
+![image](https://github.com/user-attachments/assets/d4d4f461-5aa7-4413-b05c-bc34f66ee805)
+
+5-Accedemos a wordpress
+
+![image](https://github.com/user-attachments/assets/fd775915-9023-405e-b0df-a69d7bfd91f2)
+
+6-Creamos el archivo de configuración
+
+touch /srv/www/wordpress/wp-config.php
+
+Esto es lo que debemos modificar
+
+![image](https://github.com/user-attachments/assets/da47b4d1-0ddf-4b3d-b9cd-43449259df4c)
+
+
+-Introducimos las credenciales
+
+![image](https://github.com/user-attachments/assets/3dd0e713-9b8a-4318-9780-0c32d467cd2c)
+
+-Verificamos que esta correctamente instalado
+
+![image](https://github.com/user-attachments/assets/c0d23af8-9d7f-4733-9a5b-2b3bdf73d0e0)
 
