@@ -1,124 +1,118 @@
-#Ejercicio 1
+# Instalación de Ubuntu, Apache, MariaDB, PHP y WordPress con Docker
 
-1-Descargar la imagen de ubuntu
+## Ejercicio 1: Configurar un contenedor con Ubuntu y LAMP
 
---sudo docker image pull ubuntu:22.04
+### 1. Descargar la imagen de Ubuntu
+```bash
+sudo docker image pull ubuntu:22.04
+```
 
-2-Iniciar contenedor con la imagen
+### 2. Iniciar un contenedor con la imagen
+```bash
+docker run -it --name ubuntu22 -p 8000:80 ubuntu:22.04 /bin/bash
+```
 
---docker run -it --name ubuntu22 -p 8000:80 ubuntu:22.04 /bin/bash
+### 3. Instalar Apache
+```bash
+apt install -y apache2 apache2-utils
+```
 
-3-Instalar apache
+### 4. Instalar MariaDB
+```bash
+sudo apt install -y mariadb-server mariadb-client
+```
 
---apt install -y apache2 apache2-utils
+### 5. Iniciar MariaDB
+```bash
+service mariadb start
+```
 
-4-Instalar Mariadb
+### 6. Instalar PHP y configurarlo con MariaDB
+```bash
+mysql_secure_installation
+apt install -y php php-mysql libapache2-mod-php
+```
 
---sudo apt install -y mariadb-server mariadb-client
+### 7. Instalar `systemctl` y reiniciar Apache
+```bash
+apt install systemctl
+systemctl restart apache2
+```
 
-5-Iniciar mariadb
+### 8. Crear el archivo `info.php`
+```bash
+echo "<?php phpinfo(); ?>" | sudo tee /var/www/html/info.php
+```
 
---service mariadb start
-
-6-Comandos para instalar php
-
---mysql_secure_installation
-
---apt install -y php php-mysql libapache2-mod-php
-
-7-Instalar systemctl y reiniciar apache
-
---apt install systemctl
-
---systemctl restart apache2
-
-8-Crear archivo info.php
-
---echo "<?php phpinfo(); ?>" | sudo tee /var/www/html/info.php
-
-9-Acceder al contenedor desde el navegador
-
+### 9. Acceder al contenedor desde el navegador
+```
 http://10.0.9.110:8000/info.php
+```
 
-![imagen](https://github.com/user-attachments/assets/6355a797-5c58-4857-8081-c8530a63dc2f)
+![info.php](https://github.com/user-attachments/assets/6355a797-5c58-4857-8081-c8530a63dc2f)
 
-#Ejercicio 2
+---
 
-1-Utilizar el comando para instalar los paquetes necesarios
+## Ejercicio 2: Instalación y configuración de WordPress
 
---sudo apt install ghostscript libapache2-mod-php mysql-server php php-bcmath php-curl php-imagick php-intl php-json php-mbstring php-mysql php-xml php-zip
+### 1. Instalar paquetes necesarios
+```bash
+sudo apt install ghostscript libapache2-mod-php mysql-server php php-bcmath php-curl php-imagick php-intl php-json php-mbstring php-mysql php-xml php-zip
+```
 
-2-Creamos la instalación de wordpress
-
--Primero creamos la carpeta
+### 2. Descargar e instalar WordPress
+#### Crear la carpeta para la instalación
+```bash
 mkdir -p /srv/www
-
--Le damos los permisos
 chown www-data: /srv/www
-
--Descargamos el archivo
+```
+#### Descargar y extraer WordPress
+```bash
 curl -o latest.tar.gz https://wordpress.org/latest.tar.gz
-
--Lo descomprimimos
-
 tar zx -C /srv/www -f latest.tar.gz
+```
 
-3-Configuramos apache
-
+### 3. Configurar Apache para WordPress
+#### Crear el archivo de configuración
+```bash
 touch /etc/apache2/sites-available/wordpress.conf
+```
+Debe quedar de la siguiente manera:
+![apache-config](https://github.com/user-attachments/assets/920faa98-e62d-4a81-ae0a-68d534863a48)
 
-Debería quedar algo así
-
-![image](https://github.com/user-attachments/assets/920faa98-e62d-4a81-ae0a-68d534863a48)
-
--Habilitamos el sitio
-
+#### Habilitar el sitio y módulos necesarios
+```bash
 service apache2 reload
-
--Habilitamos la reescritura
-
 a2enmod rewrite
-
--Desabilitamos el sitio predeterminado
-
 a2dissite 000-default
-
--Reiniciamos apache
-
 service apache2 restart
+```
 
--Usando el commando vamos creando lo necesario
-
+### 4. Configurar la base de datos en MySQL
+```bash
 mysql -u root -p
+```
+![mysql-setup](https://github.com/user-attachments/assets/861a91c2-928a-4ea0-8c20-18cb27ebbc29)
+![db-creation](https://github.com/user-attachments/assets/8532d0f9-c9a7-495d-a951-e730abbd5757)
 
-![image](https://github.com/user-attachments/assets/861a91c2-928a-4ea0-8c20-18cb27ebbc29)
+### 5. Acceder a la instalación de WordPress
+Abrir en el navegador:
+```
+http://tu-servidor/wordpress
+```
+![wordpress-install](https://github.com/user-attachments/assets/fd775915-9023-405e-b0df-a69d7bfd91f2)
 
-![image](https://github.com/user-attachments/assets/8532d0f9-c9a7-495d-a951-e730abbd5757)
-
-![image](https://github.com/user-attachments/assets/8484b2dc-055a-4957-9e9b-1a7db814e023)
-
-![image](https://github.com/user-attachments/assets/ad0f218c-01df-4ef8-9e60-0d7e420b7e27)
-
-![image](https://github.com/user-attachments/assets/d4d4f461-5aa7-4413-b05c-bc34f66ee805)
-
-5-Accedemos a wordpress
-
-![image](https://github.com/user-attachments/assets/fd775915-9023-405e-b0df-a69d7bfd91f2)
-
-6-Creamos el archivo de configuración
-
+### 6. Configurar `wp-config.php`
+```bash
 touch /srv/www/wordpress/wp-config.php
+```
+Configurar credenciales en `wp-config.php`:
+![wp-config](https://github.com/user-attachments/assets/da47b4d1-0ddf-4b3d-b9cd-43449259df4c)
 
-Esto es lo que debemos modificar
+### 7. Verificar la instalación de WordPress
+![wordpress-success](https://github.com/user-attachments/assets/c0d23af8-9d7f-4733-9a5b-2b3bdf73d0e0)
 
-![image](https://github.com/user-attachments/assets/da47b4d1-0ddf-4b3d-b9cd-43449259df4c)
+---
 
-
--Introducimos las credenciales
-
-![image](https://github.com/user-attachments/assets/3dd0e713-9b8a-4318-9780-0c32d467cd2c)
-
--Verificamos que esta correctamente instalado
-
-![image](https://github.com/user-attachments/assets/c0d23af8-9d7f-4733-9a5b-2b3bdf73d0e0)
+Este README documenta la instalación de un servidor LAMP en un contenedor Docker con Ubuntu 22.04, junto con la configuración de WordPress sobre Apache y MariaDB.
 
